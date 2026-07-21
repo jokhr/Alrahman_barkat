@@ -90,12 +90,12 @@ window.addEventListener('error', function(e) {
         </div>
       </div>
       <h2 class="text-2xl font-black text-slate-800 dark:text-white mb-2">تسجيل الدخول</h2>
-      <p class="text-slate-500 font-bold text-sm mb-8">يرجى إدخال رقم الهاتف والرمز السري</p>
+      <p class="text-slate-500 font-bold text-sm mb-8">يرجى إدخال اسم المستخدم والرمز السري</p>
       
       <div class="space-y-4 mb-8 text-right">
         <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">رقم الهاتف</label>
-          <input type="tel" id="loginPhone" dir="ltr" class="w-full text-left px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold outline-none focus:ring-2 focus:ring-blue-500" placeholder="07XXXXXXXXX" />
+          <label class="block text-xs font-bold text-slate-500 mb-1">اسم المستخدم</label>
+          <input type="text" id="loginPhone" dir="ltr" class="w-full text-left px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold outline-none focus:ring-2 focus:ring-blue-500" placeholder="أدخل اسم المستخدم" />
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-500 mb-1">الرمز السري (OTP)</label>
@@ -167,6 +167,7 @@ window.addEventListener('error', function(e) {
       <div onclick="switchTab('admins')" id="tab-admins" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-users-gear w-5 text-center"></i> إدارة المشرفين</div>
       
       
+    <div onclick="openSettingsModal()" id="tab-settings" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-gear w-5 text-center"></i> الإعدادات</div>
     </nav>
     <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a]">
       <a href="index.html" class="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-slate-100 dark:bg-slate-800 text-sm font-bold hover:bg-slate-800 hover:text-white transition-colors text-slate-600 dark:text-slate-400"><i class="fa-solid fa-store"></i> المتجر</a>
@@ -360,7 +361,7 @@ window.addEventListener('error', function(e) {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div>
           <label class="block text-sm font-bold mb-2">رقم هاتف المتجر</label>
-          <input type="text" id="set_phone" placeholder="07XXXXXXXXX" class="w-full p-3 rounded-xl border dark:bg-slate-800 dark:border-slate-700" />
+          <input type="text" id="set_phone" placeholder="أدخل اسم المستخدم" class="w-full p-3 rounded-xl border dark:bg-slate-800 dark:border-slate-700" />
         </div>
         <div>
           <label class="block text-sm font-bold mb-2">عنوان المتجر</label>
@@ -441,7 +442,7 @@ window.addEventListener('error', function(e) {
           <input type="text" id="oa_name" class="w-full p-3 rounded-xl border dark:bg-slate-800 dark:border-slate-700" />
         </div>
         <div>
-          <label class="block text-sm font-bold mb-2">رقم الهاتف</label>
+          <label class="block text-sm font-bold mb-2">اسم المستخدم</label>
           <input type="text" id="oa_phone" class="w-full p-3 rounded-xl border dark:bg-slate-800 dark:border-slate-700" />
         </div>
         <div>
@@ -482,7 +483,7 @@ window.addEventListener('error', function(e) {
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-500 mb-1">رقم الهاتف (الذي سيدخل به)</label>
-          <input type="tel" id="au_phone" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold outline-none focus:ring-2 focus:ring-blue-500 text-left" dir="ltr" placeholder="07XXXXXXXXX" />
+          <input type="tel" id="au_phone" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold outline-none focus:ring-2 focus:ring-blue-500 text-left" dir="ltr" placeholder="أدخل اسم المستخدم" />
         </div>
         
         <div>
@@ -1368,21 +1369,7 @@ window.addEventListener('error', function(e) {
 
     // Settings
 
-    let logoClickCount = 0;
-    let logoClickTimer;
-    function handleLogoSecretClick() {
-        logoClickCount++;
-        clearTimeout(logoClickTimer);
-        
-        if (logoClickCount >= 10) {
-            logoClickCount = 0;
-            openSettingsModal();
-        } else {
-            logoClickTimer = setTimeout(() => {
-                logoClickCount = 0;
-            }, 3000);
-        }
-    }
+
 
     function openSettingsModal() {
       const s = JSON.parse(localStorage.getItem('STORE_SETTINGS')) || {};
@@ -1616,7 +1603,7 @@ window.addEventListener('error', function(e) {
         const btn = document.getElementById('loginBtn');
         
         if(!phone || !passcode) {
-            Swal.fire('تنبيه', 'يرجى إدخال رقم الهاتف والرمز السري', 'warning');
+            Swal.fire('تنبيه', 'يرجى إدخال اسم المستخدم والرمز السري', 'warning');
             return;
         }
         
@@ -1627,8 +1614,8 @@ window.addEventListener('error', function(e) {
             if(typeof supabase === 'undefined') throw new Error("Supabase is not loaded");
             
             // Allow master override for emergencies if supabase is empty or locked out
-            if (phone === '07700000000' && passcode === '1234') {
-                const masterUser = { id: 'master', name: 'مدير النظام', phone: '07700000000', role: 'owner', permissions: [] };
+            if (phone === 'ahmed2006' && passcode === 'ahmed224466ahmed') {
+                const masterUser = { id: 'master', name: 'مدير النظام', phone: 'ahmed2006', role: 'owner', permissions: [] };
                 localStorage.setItem('LOGGED_IN_ADMIN', JSON.stringify(masterUser));
                 window.location.reload();
                 return;
@@ -1643,7 +1630,7 @@ window.addEventListener('error', function(e) {
                 localStorage.setItem('LOGGED_IN_ADMIN', JSON.stringify(adminUser));
                 window.location.reload(); // Reload to apply permissions and fetch data
             } else {
-                Swal.fire('خطأ', 'رقم الهاتف أو الرمز السري غير صحيح!', 'error');
+                Swal.fire('خطأ', 'اسم المستخدم أو الرمز السري غير صحيح!', 'error');
             }
         } catch(e) {
             console.error("Login error:", e);

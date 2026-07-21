@@ -311,7 +311,7 @@ window.addEventListener('popstate', (e) => {
 
   <!-- Supabase Integration -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2?v=1784664561"></script>
-  <script src="supabase_client.js?v=20"></script>
+  <script src="supabase_client.js?v=23"></script>
 
 </head>
 <body class="antialiased overflow-x-hidden selection:bg-primary selection:text-white">
@@ -344,9 +344,8 @@ window.addEventListener('popstate', (e) => {
         <div class="hidden md:flex items-center gap-3">
           <button onclick="toggleLang()" class="hover-float w-10 h-10 rounded-full bg-slate-100/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center font-black text-xs text-slate-900 dark:text-white shadow-sm">EN</button>
           <button onclick="openMyOrders()" class="hover-float hover-icon-bounce w-10 h-10 rounded-full bg-slate-100/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-brand shadow-sm" title="طلباتي"><i class="fa-solid fa-clipboard-list text-lg"></i></button>
-          <button onclick="alert('تم فتح المفضلة!')" class="hover-float hover-icon-bounce w-10 h-10 rounded-full bg-slate-100/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center relative shadow-sm"><i class="fa-solid fa-heart text-rose-500 text-lg"></i><span id="wishCount" class="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-md">0</span></button>
-          <a href="admin.html" class="hover-float hover-icon-bounce w-10 h-10 rounded-full bg-slate-100/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 shadow-sm"><i class="fa-solid fa-sliders text-lg"></i></a>
-          <button onclick="toggleCart()" class="hover-float hover-icon-bounce ml-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-purple-600 text-white font-black text-sm flex items-center gap-2 hover:shadow-[0_0_15px_rgba(var(--color-primary),0.5)]"><i class="fa-solid fa-cart-shopping"></i> <span id="cartCountBtn">0</span></button>
+                    <button onclick="alert('تم فتح المفضلة!')" class="hover-float hover-icon-bounce w-10 h-10 rounded-full bg-slate-100/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center relative shadow-sm"><i class="fa-solid fa-heart text-rose-500 text-lg"></i><span id="wishCount" class="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-md">0</span></button>
+                    <button onclick="toggleCart()" class="hover-float hover-icon-bounce ml-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-purple-600 text-white font-black text-sm flex items-center gap-2 hover:shadow-[0_0_15px_rgba(var(--color-primary),0.5)]"><i class="fa-solid fa-cart-shopping"></i> <span id="cartCountBtn">0</span></button>
         </div>
       </div>
     </div>
