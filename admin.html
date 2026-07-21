@@ -114,10 +114,10 @@ window.addEventListener('error', function(e) {
 
   <aside id="sidebar" class="fixed md:static inset-y-0 right-0 w-64 bg-slate-50 dark:bg-slate-900 border-l-0 flex flex-col z-[100] transform translate-x-full md:translate-x-0 rounded-none border-r border-slate-200 dark:border-slate-800 transition-transform duration-200">
     <div class="py-6 min-h-[160px] flex items-center justify-center border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a] relative">
-      <div id="adminLogoContainer" class="hidden flex-row items-center justify-center mt-2 w-full h-full p-2">
+      <div id="adminLogoContainer" onclick="handleLogoSecretClick()" class="hidden flex-row items-center justify-center mt-2 w-full h-full p-2">
         <img id="adminDynamicLogo" class="w-32 h-32 md:w-36 md:h-36 object-contain p-2 bg-white dark:bg-slate-800 rounded-full shadow-lg border-2 border-blue-500/20 transition-transform duration-300 hover:scale-105" />
       </div>
-      <div id="adminTextLogo" class="flex flex-col items-center justify-center text-blue-600 font-en leading-none mt-2 group cursor-pointer transition-transform duration-300">
+      <div id="adminTextLogo" onclick="handleLogoSecretClick()" class="flex flex-col items-center justify-center text-blue-600 font-en leading-none mt-2 group cursor-pointer transition-transform duration-300">
         <i class="fa-solid fa-wind text-4xl mb-2"></i>
         <span class="text-2xl font-black tracking-widest transition-transform group-hover:scale-105">BARAKAT</span>
         <span class="text-xl font-bold tracking-widest transition-transform group-hover:scale-105">Al-RAHMAN</span>
@@ -166,7 +166,7 @@ window.addEventListener('error', function(e) {
       <div onclick="switchTab('kanban')" id="tab-kanban" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-truck-fast w-5 text-center"></i> الطلبات</div>
       <div onclick="switchTab('admins')" id="tab-admins" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-users-gear w-5 text-center"></i> إدارة المشرفين</div>
       
-      <div onclick="openSettingsModal()" id="tab-settings" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-gear w-5 text-center"></i> الإعدادات</div>
+      
     </nav>
     <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a]">
       <a href="index.html" class="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-slate-100 dark:bg-slate-800 text-sm font-bold hover:bg-slate-800 hover:text-white transition-colors text-slate-600 dark:text-slate-400"><i class="fa-solid fa-store"></i> المتجر</a>
@@ -620,8 +620,17 @@ window.addEventListener('error', function(e) {
         }
     }
     
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchOrdersCloud();
+    document.addEventListener('DOMContentLoaded', async () => {
+        if (typeof fetchStoreDataCloud === 'function') {
+            const cloudData = await fetchStoreDataCloud();
+            if (cloudData) {
+                STORE_DATA = cloudData;
+                localStorage.setItem('STORE_DATA', JSON.stringify(STORE_DATA));
+                // Refresh UI if needed
+                if(typeof switchTab === 'function') switchTab(currentSection);
+            }
+        }
+        if (typeof fetchOrdersCloud === 'function') fetchOrdersCloud();
     });
     let STORE_DATA = JSON.parse(localStorage.getItem('STORE_DATA')) || { products: [], brands: [], categories: [], banners: [], discounts: [] };
     if(!STORE_DATA.banners) STORE_DATA.banners = [];
@@ -1359,6 +1368,22 @@ window.addEventListener('error', function(e) {
 
     // Settings
 
+    let logoClickCount = 0;
+    let logoClickTimer;
+    function handleLogoSecretClick() {
+        logoClickCount++;
+        clearTimeout(logoClickTimer);
+        
+        if (logoClickCount >= 10) {
+            logoClickCount = 0;
+            openSettingsModal();
+        } else {
+            logoClickTimer = setTimeout(() => {
+                logoClickCount = 0;
+            }, 3000);
+        }
+    }
+
     function openSettingsModal() {
       const s = JSON.parse(localStorage.getItem('STORE_SETTINGS')) || {};
       document.getElementById('set_phone').value = s.phone || '';
@@ -1798,6 +1823,7 @@ window.addEventListener('error', function(e) {
     });
 
 </script>
+</div>
 </div>
 </body>
 </html>
