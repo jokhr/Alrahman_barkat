@@ -1604,7 +1604,7 @@ window.addEventListener('error', function(e) {
             if(error) throw error;
             
             if(data.session) {
-                setTimeout(() => { window.location.reload(); }, 500); 
+                document.getElementById('loginEmail').value = ''; document.getElementById('loginPasscode').value = ''; checkAuth(); 
             } else {
                 Swal.fire('خطأ', 'البريد الإلكتروني أو كلمة المرور غير صحيحة!', 'error');
             }
@@ -1621,7 +1621,7 @@ window.addEventListener('error', function(e) {
         if(typeof supabase !== 'undefined') {
             await supabase.auth.signOut();
         }
-        setTimeout(() => { window.location.reload(); }, 500);
+        window.location.reload();
     }
 
     async function checkAuth() {
