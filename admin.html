@@ -1239,11 +1239,6 @@ window.addEventListener('error', function(e) {
       Swal.fire({ title: 'تم الحفظ!', icon: 'success', timer: 1500, showConfirmButton: false });
     }
 
-        // Chart.js
-    new Chart(document.getElementById('salesChart').getContext('2d'), {
-      type: 'line', data: { labels: ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'], datasets: [{ label: 'المبيعات', data: [2.5, 3.8, 1.2, 4.5, 5.2, 8.5, 14.5], borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', borderWidth: 3, fill: true, tension: 0.4 }] }, options: { responsive: true, plugins: { legend: { display: false } } }
-    });
-
     // Kanban
     function renderKanban() {
       const ORDERS = window.BARAKAT_ORDERS;
