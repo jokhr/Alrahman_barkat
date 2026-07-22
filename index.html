@@ -572,27 +572,10 @@ window.addEventListener('popstate', (e) => {
           <div><label class="block text-sm font-bold mb-2">المنطقة / الشارع</label><input type="text" id="custAddress" required placeholder="اسم المنطقة أو الشارع" class="w-full p-3 rounded-xl border outline-none focus:border-primary bg-slate-50 dark:bg-slate-800 dark:border-slate-700" /></div>
         </div>
         
-        <h3 class="text-lg font-black pt-4 border-t border-slate-200 dark:border-slate-700">طريقة الدفع</h3>
-        <div class="flex gap-4">
-          <label class="flex-1 p-4 border rounded-xl cursor-pointer hover:border-primary dark:border-slate-700">
-            <input type="radio" name="payMethod" value="cod" checked onchange="toggleCC()" class="mr-2" /> الدفع عند الاستلام
-          </label>
-          <label class="flex-1 p-4 border rounded-xl cursor-pointer hover:border-primary dark:border-slate-700">
-            <input type="radio" name="payMethod" value="cc" onchange="toggleCC()" class="mr-2" /> الدفع الإلكتروني
-          </label>
-        </div>
-        
-        <!-- Dummy Credit Card Form -->
-        <div id="ccForm" class="hidden p-4 bg-slate-50 dark:bg-slate-800 rounded-xl space-y-4 border border-slate-200 dark:border-slate-700">
-          <div><label class="block text-xs font-bold mb-1">رقم البطاقة</label><input type="text" placeholder="XXXX XXXX XXXX XXXX" class="w-full p-2 rounded border dark:bg-slate-900 dark:border-slate-700" /></div>
-          <div class="flex gap-4">
-            <div class="flex-1"><label class="block text-xs font-bold mb-1">تاريخ الانتهاء</label><input type="text" placeholder="MM/YY" class="w-full p-2 rounded border dark:bg-slate-900 dark:border-slate-700" /></div>
-            <div class="flex-1"><label class="block text-xs font-bold mb-1">CVC</label><input type="text" placeholder="123" class="w-full p-2 rounded border dark:bg-slate-900 dark:border-slate-700" /></div>
-          </div>
-        </div>
-        
         <p id="checkoutError" class="text-rose-500 text-sm font-bold hidden"></p>
-        <button type="submit" class="w-full py-4 bg-primary text-white font-black rounded-xl hover:bg-purple-700 shadow-lg text-lg">تأكيد الطلب</button>
+        <button type="submit" class="w-full py-4 bg-green-500 text-white font-black rounded-xl hover:bg-green-600 shadow-lg text-lg flex items-center justify-center gap-3">
+          <i class="fa-brands fa-whatsapp text-2xl"></i> إرسال الطلب عبر الواتساب
+        </button>
       </form>
     </div>
   </div>
@@ -1295,11 +1278,7 @@ window.addEventListener('popstate', (e) => {
       document.getElementById('checkoutModal').classList.add('hidden');
       document.getElementById('checkoutModal').classList.remove('flex');
     }
-    function toggleCC() {
-      const val = document.querySelector('input[name="payMethod"]:checked').value;
-      const ccForm = document.getElementById('ccForm');
-      if(val === 'cc') { ccForm.classList.remove('hidden'); } else { ccForm.classList.add('hidden'); }
-    }
+
     document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
