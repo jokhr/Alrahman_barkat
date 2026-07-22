@@ -917,25 +917,100 @@ window.addEventListener('popstate', (e) => {
     function filterProducts() {
       const maxPrice = parseInt(document.getElementById('priceRange').value);
       const gridContainer = document.getElementById('productGrid');
+      if (!gridContainer) return;
       gridContainer.innerHTML = '';
       
       const filtered = STORE_DATA.products.filter(p => (CURRENT_BRAND_FILTER === 'all' || p.brand === CURRENT_BRAND_FILTER) && (CURRENT_CATEGORY_FILTER === 'all' || p.categoryId === CURRENT_CATEGORY_FILTER) && p.price <= maxPrice);
-                  <span>توصيل البائع</span>
-                  <i class="fa-solid fa-truck-fast text-[#00aaff]"></i>
-                </div>
-                
-                <!-- Store Tag -->
-                <div class="mt-3 bg-black dark:bg-slate-800 text-white text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center justify-center gap-2 self-end">
-                  <span>معرض بركات الرحمن</span>
-                  <i class="fa-solid fa-store text-white"></i>
-                </div>
+      
+      if (filtered.length === 0) { 
+        gridContainer.className = "flex justify-center w-full";
+        gridContainer.innerHTML = `<div class="text-center py-10 font-bold text-slate-500 dark:text-slate-400">لا توجد منتجات</div>`; 
+        return; 
+      }
+      
+      gridContainer.className = "flex flex-col gap-12 w-full";
+      
+      const grouped = {};
+      filtered.forEach(p => {
+         if(!grouped[p.categoryId]) grouped[p.categoryId] = [];
+         grouped[p.categoryId].push(p);
+      });
+      
+      Object.keys(grouped).forEach(catId => {
+         const cat = STORE_DATA.categories.find(c => c.id === catId);
+         const catName = cat ? cat.name : 'أخرى';
+         const catIcon = cat ? cat.icon : 'fa-box';
+         const products = grouped[catId];
+         
+         let sectionHtml = `
+          <section class="mb-4">
+            <div class="flex flex-wrap sm:flex-nowrap justify-between items-center gap-4 mb-6">
+              <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">`;
+              
+              if (catIcon.startsWith('data:') || catIcon.startsWith('http')) {
+                  sectionHtml += `<img src="${catIcon}" class="w-6 h-6 object-contain" />`;
+              } else {
+                  sectionHtml += `<i class="fa-solid ${catIcon} text-primary"></i>`;
+              }
+              
+              sectionHtml += `${catName}</h2>
+              <div class="flex gap-3 items-center">
+                <button onclick="document.getElementById('catSlider_${catId}').scrollBy({left: 280, behavior: 'smooth'})" class="hover-float w-10 h-10 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 shadow-md hover:text-primary transition-colors"><i class="fa-solid fa-chevron-right text-sm"></i></button>
+                <button onclick="document.getElementById('catSlider_${catId}').scrollBy({left: -280, behavior: 'smooth'})" class="hover-float w-10 h-10 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 shadow-md hover:text-primary transition-colors"><i class="fa-solid fa-chevron-left text-sm"></i></button>
               </div>
             </div>
-          </div>
-        `;
+            <div id="catSlider_${catId}" class="flex gap-4 overflow-x-auto snap-x no-scrollbar pb-8 pt-4 -mt-4 px-2 -mx-2">
+         `;
+         
+         products.forEach(p => {
+            const discPercent = (p.oldPrice && p.oldPrice > p.price) ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : null;
+            const inCart = CART.find(c => c.id === p.id);
+            const inWish = WISHLIST.find(w => w === p.id);
+            const inComp = COMPARE_LIST.find(c => c === p.id);
+            
+            sectionHtml += `
+              <div class="snap-start shrink-0 w-[240px] md:w-[280px] bg-white dark:bg-slate-800 rounded-3xl shadow-sm hover:shadow-2xl transition-shadow duration-300 relative group border border-slate-100 dark:border-slate-700 flex flex-col overflow-hidden">
+                <div class="relative h-48 md:h-56 bg-slate-50 dark:bg-slate-900/50 p-6 flex items-center justify-center overflow-hidden cursor-pointer" onclick="openQuickView('${p.id}')">
+                  <img src="${p.img}" class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-lg" alt="${p.name}" />
+                  
+                  <!-- Top Badges -->
+                  <div class="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                    ${p.isNew ? '<span class="bg-emerald-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg shadow-emerald-500/30 w-fit">جديد</span>' : ''}
+                    ${discPercent ? `<span class="bg-rose-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg shadow-rose-500/30 w-fit">-${discPercent}%</span>` : ''}
+                  </div>
+                  
+                  <!-- Floating Actions -->
+                  <button onclick="event.stopPropagation(); toggleWishlist(null, '${p.id}', this)" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-all shadow-sm z-10 ${inWish ? '!text-rose-500' : ''}"><i class="fa-solid fa-heart ${inWish ? 'fa-beat' : ''}"></i></button>
+                  
+                  <!-- Cart Add Overlay -->
+                  <button onclick="event.stopPropagation(); addToCart(null, '${p.id}')" class="absolute top-1/2 -translate-y-1/2 left-4 w-10 h-10 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-white hover:bg-primary transition-all shadow-lg z-10 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"><i class="fa-solid fa-cart-plus"></i></button>
+                </div>
+                <div class="p-5 flex flex-col flex-1">
+                  <div class="text-xs text-brand font-bold uppercase tracking-wider mb-2">${p.brandLabel || p.brand || ''}</div>
+                  <h3 class="font-black text-sm md:text-base text-slate-800 dark:text-white mb-4 line-clamp-2 leading-relaxed cursor-pointer hover:text-primary transition-colors flex-1" onclick="openQuickView('${p.id}')">${p.name}</h3>
+                  <div class="flex items-center justify-between mt-auto">
+                    <div>
+                      <p class="font-black text-lg text-slate-900 dark:text-white">${p.price.toLocaleString('ar')} د.ع</p>
+                      ${p.oldPrice && p.oldPrice > p.price ? `<p class="text-xs font-bold text-slate-400 line-through">${p.oldPrice.toLocaleString('ar')} د.ع</p>` : `<p class="text-xs font-bold text-transparent select-none">0</p>`}
+                    </div>
+                    <div class="flex gap-2">
+                      <button onclick="event.stopPropagation(); toggleCompare('${p.id}', this)" title="مقارنة" class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 dark:bg-slate-700/50 text-slate-500 hover:text-primary transition-colors ${inComp ? '!text-primary !bg-primary/10' : ''}"><i class="fa-solid fa-code-compare"></i></button>
+                    </div>
+                  </div>
+                  <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                     <i class="fa-solid fa-truck-fast"></i> توصيل سريع
+                  </div>
+                </div>
+              </div>
+            `;
+         });
+         
+         sectionHtml += `</div></section>`;
+         gridContainer.innerHTML += sectionHtml;
       });
-      // No observer needed for cards — CSS animation handles entrance
-      document.getElementById('wishCount').innerText = WISHLIST.length;
+      
+      const wishCountEl = document.getElementById('wishCount');
+      if (wishCountEl) wishCountEl.innerText = WISHLIST.length;
     }
 
     // Wishlist - delegated helper (works reliably even with innerHTML)
