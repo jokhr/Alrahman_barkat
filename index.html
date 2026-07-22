@@ -1309,25 +1309,32 @@ window.addEventListener('popstate', (e) => {
       btn.disabled = true;
 
       try {
-          const total = CART.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-          const name = document.getElementById('custName').value;
-          const phone = document.getElementById('custPhone').value;
-          const address = document.getElementById('custGov') ? document.getElementById('custGov').value : ''; 
-          let msg = `*طلب جديد من متجر بركات الرحمن* 🛒\n\n`;
-          msg += `👤 الاسم: ${name}\n`;
-          msg += `📱 الهاتف: ${phone}\n`;
-          msg += `📍 العنوان: ${address}\n\n`;
-          msg += `*المنتجات المطلوبة:*\n`;
+          const total = CART.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+          const name = document.getElementById('custName').value || 'غير محدد';
+          const phone = document.getElementById('custPhone').value || 'غير محدد';
+          const address = document.getElementById('custGov') ? document.getElementById('custGov').value : 'غير محدد'; 
           
-          CART.forEach((item, index) => {
-              msg += `${index + 1}. ${item.name}\n`;
+          let msg = `🛍️ طلب جديد من متجر بركات الرحمن 🛍️\n`;
+          msg += `──────────────────\n`;
+          msg += `👤 معلومات العميل:\n`;
+          msg += `▪️ الاسم: ${name}\n`;
+          msg += `▪️ الهاتف: ${phone}\n`;
+          msg += `▪️ العنوان: ${address}\n`;
+          msg += `──────────────────\n`;
+          msg += `📦 تفاصيل الطلب:\n`;
+          
+          CART.forEach((item) => {
+              const qty = item.quantity || 1;
+              msg += `🛍️ ${item.name}\n`;
               if (item.selectedSize || item.selectedColor) {
                   msg += `   - ${item.selectedSize ? 'الحجم: ' + item.selectedSize : ''} ${item.selectedColor ? 'اللون: ' + item.selectedColor : ''}\n`;
               }
-              msg += `   - السعر: $${item.price} × ${item.quantity} = $${item.price * item.quantity}\n`;
+              msg += `🔸 السعر: ${item.price.toLocaleString('ar')} د.ع × ${qty} = ${(item.price * qty).toLocaleString('ar')} د.ع\n\n`;
           });
           
-          msg += `\n*المجموع الكلي: $${total}* 💵`;
+          msg += `──────────────────\n`;
+          msg += `💰 المجموع الكلي: ${total.toLocaleString('ar')} د.ع\n`;
+          msg += `🚚 بانتظار التأكيد والتجهيز...`;
 
           // Placeholder for the WhatsApp number (user will change this)
           const whatsappNumber = "9647838476719"; 
