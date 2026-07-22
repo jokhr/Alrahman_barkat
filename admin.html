@@ -126,9 +126,7 @@ window.addEventListener('error', function(e) {
       </div>
     </div>
     <nav class="flex-1 p-4 space-y-2 overflow-y-auto" id="navMenu">
-      <div onclick="switchTab('dashboard')" id="tab-dashboard" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-white font-bold bg-blue-600 cursor-pointer transition-colors">
-        <i class="fa-solid fa-chart-line w-5 text-center"></i> نظرة عامة
-      </div>
+      
 
       <!-- Submenu: Products -->
       <div class="space-y-1 overflow-hidden">
@@ -164,7 +162,7 @@ window.addEventListener('error', function(e) {
       
       <div onclick="switchTab('discounts')" id="tab-discounts" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-ticket w-5 text-center"></i> الكوبونات</div>
       
-      <div onclick="switchTab('kanban')" id="tab-kanban" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-truck-fast w-5 text-center"></i> الطلبات</div>
+      
       
       
       
@@ -180,9 +178,11 @@ window.addEventListener('error', function(e) {
     <header class="h-20 solid-panel border-t-0 border-l-0 border-r-0 flex items-center justify-between px-4 md:px-8 z-10 rounded-none">
       <div class="flex items-center gap-4">
         <button onclick="toggleSidebar()" class="md:hidden hover-float w-10 h-10 rounded-full solid-panel flex items-center justify-center text-slate-500 hover:text-brand"><i class="fa-solid fa-bars"></i></button>
-        <h2 class="text-xl md:text-2xl font-black" id="pageTitle">نظرة عامة (Analytics)</h2>
+        <h2 class="text-xl md:text-2xl font-black" id="pageTitle">المنتجات (Products)</h2>
       </div>
-      <button onclick="document.documentElement.classList.toggle('dark')" class="w-10 h-10 hover-float hover-icon-bounce rounded-full solid-panel flex items-center justify-center bg-slate-100 dark:bg-slate-800"><i class="fa-solid fa-moon text-slate-500"></i></button>
+      <div id="headerActions" class="flex items-center gap-3">
+        <button onclick="document.documentElement.classList.toggle('dark')" class="hover-float flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 font-bold transition-all border border-transparent hover:border-slate-300 dark:hover:border-slate-600 shadow-sm"><i class="fa-solid fa-moon"></i><span class="hidden md:inline">المظهر</span></button>
+      </div>
     </header>
 
         <div class="flex-1 overflow-y-auto p-8" id="contentWrapper">
@@ -213,19 +213,11 @@ window.addEventListener('error', function(e) {
         </div>
       </div>
     </section>
-    <!-- DASHBOARD -->
-      <div id="view-dashboard" class="space-y-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-          
-            <div class="w-14 h-14 rounded-full bg-green-100 text-green-500 flex items-center justify-center text-2xl"><i class="fa-solid fa-dollar-sign"></i></div>
-          </div>
+    
           
       </div>
 
-      <!-- KANBAN VIEW -->
-      <div id="view-kanban" class="hidden h-full">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="solid-panel p-4 rounded-3xl bg-slate-50 border-t-4 border-t-yellow-500"><h4 class="font-black mb-4">قيد الانتظار</h4><div id="col-pending" class="kanban-col space-y-4 min-h-[200px]" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+      
           <div class="solid-panel p-4 rounded-3xl bg-slate-50 border-t-4 border-t-blue-500"><h4 class="font-black mb-4">جاري التجهيز</h4><div id="col-processing" class="kanban-col space-y-4 min-h-[200px]" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
           <div class="solid-panel p-4 rounded-3xl bg-slate-50 border-t-4 border-t-green-500"><h4 class="font-black mb-4">تم التوصيل</h4><div id="col-delivered" class="kanban-col space-y-4 min-h-[200px]" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
           <div class="solid-panel p-4 rounded-3xl bg-slate-50 border-t-4 border-t-red-500"><h4 class="font-black mb-4">ملغي</h4><div id="col-cancelled" class="kanban-col space-y-4 min-h-[200px]" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
@@ -623,7 +615,7 @@ window.addEventListener('error', function(e) {
     
     function saveStore() { localStorage.setItem('STORE_DATA', JSON.stringify(STORE_DATA)); }
 
-    let currentSection = 'dashboard';
+    let currentSection = 'products';
     let currentEditId = null;
 
     function toggleAccordion(id) {
@@ -1210,16 +1202,10 @@ window.addEventListener('error', function(e) {
         newItem.specs = document.getElementById('m_specs').value.split('\n').map(x=>x.trim()).filter(x=>x);
       } else if(currentSection === 'categories') {
         newItem.name = document.getElementById('m_name').value;
-        newItem.desc = document.getElementById('m_desc').value;
-        newItem.colors = document.getElementById('m_colors').value;
-        newItem.warranty = document.getElementById('m_warranty').value;
         newItem.icon = document.getElementById('m_icon').value;
       } else if(currentSection === 'brands') {
         newItem.id = document.getElementById('m_id').value;
         newItem.name = document.getElementById('m_name').value;
-        newItem.desc = document.getElementById('m_desc').value;
-        newItem.colors = document.getElementById('m_colors').value;
-        newItem.warranty = document.getElementById('m_warranty').value;
       } else if(currentSection === 'banners') {
         newItem.title = document.getElementById('m_title').value;
         newItem.img = document.getElementById('m_img').value;
@@ -1640,13 +1626,13 @@ window.addEventListener('error', function(e) {
             document.getElementById('mainApp').classList.add('flex');
             
             // Add logout button to header if it doesn't exist
-            const header = document.querySelector('header');
+            const header = document.getElementById('headerActions');
             if(header && !document.getElementById('logoutBtn')) {
                 const logoutBtn = document.createElement('button');
                 logoutBtn.id = 'logoutBtn';
                 logoutBtn.onclick = logoutAdmin;
-                logoutBtn.className = 'ml-4 w-10 h-10 hover-float rounded-full solid-panel flex items-center justify-center bg-rose-50 text-rose-500 border-rose-100 dark:bg-rose-900/30 dark:border-rose-800';
-                logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+                logoutBtn.className = 'hover-float flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-900/40 dark:text-rose-400 font-bold transition-all border border-transparent hover:border-rose-200 dark:hover:border-rose-800 shadow-sm';
+                logoutBtn.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket"></i><span class="hidden md:inline">خروج</span>';
                 logoutBtn.title = 'تسجيل الخروج';
                 header.appendChild(logoutBtn);
             }
