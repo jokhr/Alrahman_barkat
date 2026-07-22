@@ -344,8 +344,11 @@ window.addEventListener('popstate', (e) => {
         <div class="hidden md:flex items-center gap-3">
           <button onclick="toggleLang()" class="hover-float w-10 h-10 rounded-full bg-slate-100/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center font-black text-xs text-slate-900 dark:text-white shadow-sm">EN</button>
           <button onclick="openMyOrders()" class="hover-float hover-icon-bounce w-10 h-10 rounded-full bg-slate-100/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-brand shadow-sm" title="طلباتي"><i class="fa-solid fa-clipboard-list text-lg"></i></button>
-                    <button onclick="alert('تم فتح المفضلة!')" class="hover-float hover-icon-bounce w-10 h-10 rounded-full bg-slate-100/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center relative shadow-sm"><i class="fa-solid fa-heart text-rose-500 text-lg"></i><span id="wishCount" class="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-md">0</span></button>
-                    <button onclick="toggleCart()" class="hover-float hover-icon-bounce ml-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-purple-600 text-white font-black text-sm flex items-center gap-2 hover:shadow-[0_0_15px_rgba(var(--color-primary),0.5)]"><i class="fa-solid fa-cart-shopping"></i> <span id="cartCountBtn">0</span></button>
+          <button onclick="alert('في قيد التطوير!')" class="hover-float hover-icon-bounce w-10 h-10 rounded-full bg-slate-100/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center relative shadow-sm"><i class="fa-solid fa-heart text-rose-500 text-lg"></i><span id="wishCount" class="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-md">0</span></button>
+          
+          <button onclick="handleAuthClick()" id="desktopAuthBtn" class="hover-float hover-icon-bounce w-10 h-10 rounded-full bg-slate-100/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-brand shadow-sm" title="حسابي"><i class="fa-regular fa-user text-lg" id="desktopAuthIcon"></i></button>
+
+          <button onclick="toggleCart()" class="hover-float hover-icon-bounce ml-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-purple-600 text-white font-black text-sm flex items-center gap-2 hover:shadow-[0_0_15px_rgba(var(--color-primary),0.5)]"><i class="fa-solid fa-cart-shopping"></i> <span id="cartCountBtn">0</span></button>
         </div>
       </div>
     </div>
@@ -357,25 +360,29 @@ window.addEventListener('popstate', (e) => {
     <!-- Mobile Nav Glass Indicator -->
     <div id="mobile-nav-indicator" class="absolute h-[44px] rounded-xl pointer-events-none z-0" style="background: linear-gradient(135deg,rgba(99,102,241,0.15),rgba(139,92,246,0.1)); backdrop-filter: blur(12px); opacity: 0; transition: transform 0.18s cubic-bezier(0.25,1,0.5,1), opacity 0.15s ease, width 0.18s ease; top: 6px; transform: translateX(0); will-change: transform, width, opacity;"></div>
 
-    <a href="#" onclick="window.scrollTo(0,0)" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-primary p-1.5 transition-transform active:scale-[0.92] w-1/5">
+    <a href="#" onclick="window.scrollTo(0,0)" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-primary p-1.5 transition-transform active:scale-[0.92] flex-1">
       <i class="fa-solid fa-house text-base"></i>
       <span class="text-[9px] font-bold">الرئيسية</span>
     </a>
-    <button onclick="document.getElementById('catSlider').scrollIntoView({behavior: 'smooth'})" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors p-1.5 active:scale-[0.92] w-1/5">
+    <button onclick="document.getElementById('catSlider').scrollIntoView({behavior: 'smooth'})" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors p-1.5 active:scale-[0.92] flex-1">
       <i class="fa-solid fa-list text-base"></i>
       <span class="text-[9px] font-bold">الأقسام</span>
     </button>
-    <button onclick="toggleCart()" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors p-1.5 active:scale-[0.92] w-1/5">
+    <button onclick="toggleCart()" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors p-1.5 active:scale-[0.92] flex-1">
       <i class="fa-solid fa-cart-shopping text-base relative">
         <span id="mobileCartCount" class="absolute -top-1 -right-2 w-3.5 h-3.5 bg-rose-500 text-white text-[8px] font-bold rounded-full flex items-center justify-center shadow-sm">0</span>
       </i>
       <span class="text-[9px] font-bold">السلة</span>
     </button>
-    <button onclick="openMyOrders()" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors p-1.5 active:scale-[0.92] w-1/5">
+    <button onclick="openMyOrders()" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors p-1.5 active:scale-[0.92] flex-1">
       <i class="fa-solid fa-clipboard-list text-base"></i>
       <span class="text-[9px] font-bold">طلباتي</span>
     </button>
-    <button onclick="toggleTheme()" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors p-1.5 active:scale-[0.92] w-1/5">
+    <button onclick="handleAuthClick()" id="mobileAuthBtn" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors p-1.5 active:scale-[0.92] flex-1">
+      <i class="fa-regular fa-user text-base" id="mobileAuthIcon"></i>
+      <span class="text-[9px] font-bold">حسابي</span>
+    </button>
+    <button onclick="toggleTheme()" class="bottom-nav-item relative z-10 flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors p-1.5 active:scale-[0.92] flex-1">
       <i class="fa-solid fa-moon text-base" id="mobileThemeIcon"></i>
       <span class="text-[9px] font-bold">الوضع</span>
     </button>
@@ -581,6 +588,68 @@ window.addEventListener('popstate', (e) => {
   </div>
 
   
+  <!-- Auth Modal (Login/Signup) -->
+  <div id="authModal" class="fixed inset-0 bg-slate-900/60 z-[6000] hidden items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+    <div class="solid-panel w-full max-w-md rounded-3xl p-6 relative shadow-2xl transform scale-95 transition-all duration-300" id="authBox">
+      <button onclick="closeAuthModal()" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-rose-500 transition-colors"><i class="fa-solid fa-xmark"></i></button>
+      <div class="text-center mb-6 mt-4">
+        <h2 id="authTitle" class="text-2xl font-black text-slate-900 dark:text-white">تسجيل الدخول</h2>
+        <p id="authSubtitle" class="text-sm text-slate-500 mt-2 font-bold">أهلاً بك مجدداً في متجرنا</p>
+      </div>
+      <form id="authForm" class="space-y-4 text-right">
+        <div>
+          <label class="block text-sm font-bold mb-2">البريد الإلكتروني</label>
+          <input type="email" id="authEmail" required class="w-full p-3 rounded-xl border outline-none focus:border-primary bg-slate-50 dark:bg-slate-800 dark:border-slate-700 text-left" dir="ltr" />
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-2">كلمة المرور</label>
+          <input type="password" id="authPassword" required minlength="6" class="w-full p-3 rounded-xl border outline-none focus:border-primary bg-slate-50 dark:bg-slate-800 dark:border-slate-700 text-left" dir="ltr" />
+        </div>
+        <p id="authError" class="text-rose-500 text-xs font-bold hidden"></p>
+        <button type="submit" id="authSubmitBtn" class="w-full py-4 bg-primary text-white font-black rounded-xl hover:bg-purple-700 shadow-lg text-lg flex items-center justify-center gap-2">
+          تسجيل الدخول <i class="fa-solid fa-arrow-left"></i>
+        </button>
+      </form>
+      <div class="mt-6 text-center text-sm font-bold text-slate-500">
+        <span id="authToggleText">ليس لديك حساب؟</span>
+        <button onclick="toggleAuthMode()" id="authToggleBtn" type="button" class="text-primary hover:underline font-black mr-1">إنشاء حساب جديد</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div id="profileModal" class="fixed inset-0 bg-slate-900/60 z-[6000] hidden items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+    <div class="solid-panel w-full max-w-md rounded-3xl p-6 relative shadow-2xl transform scale-95 transition-all duration-300" id="profileBox">
+      <button onclick="closeProfileModal()" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-rose-500 transition-colors"><i class="fa-solid fa-xmark"></i></button>
+      <div class="flex justify-between items-center mb-6 mt-4 border-b border-slate-100 dark:border-slate-700 pb-4">
+        <h2 class="text-2xl font-black text-slate-900 dark:text-white"><i class="fa-solid fa-user-circle text-primary ml-2"></i>حسابي</h2>
+        <button onclick="logoutUser()" type="button" class="text-rose-500 hover:text-rose-600 text-xs font-black bg-rose-50 dark:bg-rose-500/10 px-3 py-1.5 rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket ml-1"></i>خروج</button>
+      </div>
+      <form id="profileForm" class="space-y-4 text-right">
+        <div class="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 p-3 rounded-lg text-xs font-bold mb-4">
+          <i class="fa-solid fa-circle-info ml-1"></i> سيتم استخدام هذه البيانات تلقائياً عند إتمام الطلب لتوفير وقتك.
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-2">الاسم الكامل</label>
+          <input type="text" id="profName" required class="w-full p-3 rounded-xl border outline-none focus:border-primary bg-slate-50 dark:bg-slate-800 dark:border-slate-700" />
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-2">رقم الهاتف (واتساب)</label>
+          <input type="tel" id="profPhone" required class="w-full p-3 rounded-xl border outline-none focus:border-primary bg-slate-50 dark:bg-slate-800 dark:border-slate-700 text-left" dir="ltr" />
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-2">المحافظة / العنوان التفصيلي</label>
+          <input type="text" id="profAddress" required class="w-full p-3 rounded-xl border outline-none focus:border-primary bg-slate-50 dark:bg-slate-800 dark:border-slate-700" />
+        </div>
+        <p id="profileError" class="text-rose-500 text-xs font-bold hidden"></p>
+        <p id="profileSuccess" class="text-green-500 text-xs font-bold hidden">تم حفظ البيانات بنجاح!</p>
+        <button type="submit" id="profileSubmitBtn" class="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black rounded-xl hover:bg-primary dark:hover:bg-primary shadow-lg mt-2">
+          حفظ البيانات
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- Success Modal -->
   <div id="successModal" class="fixed inset-0 bg-slate-900/90 z-[7000] hidden items-center justify-center p-4">
     <div class="solid-panel w-full max-w-md rounded-3xl p-8 relative shadow-2xl text-center transform scale-95 transition-all duration-300 opacity-0" id="successBox">
@@ -1267,10 +1336,145 @@ window.addEventListener('popstate', (e) => {
       }
     }
 
+    // Auth & Profile Modals
+    function handleAuthClick() {
+      if (window.currentUserProfile) {
+        document.getElementById('profName').value = window.currentUserProfile.full_name || '';
+        document.getElementById('profPhone').value = window.currentUserProfile.phone || '';
+        document.getElementById('profAddress').value = window.currentUserProfile.gov_address || '';
+        
+        document.getElementById('profileModal').classList.remove('hidden');
+        document.getElementById('profileModal').classList.add('flex');
+        setTimeout(() => document.getElementById('profileModal').classList.remove('opacity-0'), 10);
+      } else {
+        document.getElementById('authModal').classList.remove('hidden');
+        document.getElementById('authModal').classList.add('flex');
+        setTimeout(() => document.getElementById('authModal').classList.remove('opacity-0'), 10);
+      }
+    }
+    
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.add('opacity-0');
+      setTimeout(() => {
+        document.getElementById('authModal').classList.add('hidden');
+        document.getElementById('authModal').classList.remove('flex');
+      }, 300);
+    }
+    
+    function closeProfileModal() {
+      document.getElementById('profileModal').classList.add('opacity-0');
+      setTimeout(() => {
+        document.getElementById('profileModal').classList.add('hidden');
+        document.getElementById('profileModal').classList.remove('flex');
+      }, 300);
+    }
+    
+    let isSignupMode = false;
+    function toggleAuthMode() {
+      isSignupMode = !isSignupMode;
+      document.getElementById('authTitle').innerText = isSignupMode ? 'إنشاء حساب' : 'تسجيل الدخول';
+      document.getElementById('authSubtitle').innerText = isSignupMode ? 'مرحباً بك في متجرنا' : 'أهلاً بك مجدداً في متجرنا';
+      document.getElementById('authSubmitBtn').innerHTML = isSignupMode ? 'إنشاء الحساب <i class="fa-solid fa-user-plus"></i>' : 'تسجيل الدخول <i class="fa-solid fa-arrow-left"></i>';
+      document.getElementById('authToggleText').innerText = isSignupMode ? 'لديك حساب بالفعل؟' : 'ليس لديك حساب؟';
+      document.getElementById('authToggleBtn').innerText = isSignupMode ? 'تسجيل الدخول' : 'إنشاء حساب جديد';
+      document.getElementById('authError').classList.add('hidden');
+    }
+    
+    document.getElementById('authForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('authEmail').value;
+      const pwd = document.getElementById('authPassword').value;
+      const errEl = document.getElementById('authError');
+      errEl.classList.add('hidden');
+      
+      const btn = document.getElementById('authSubmitBtn');
+      const origText = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> انتظر...';
+      btn.disabled = true;
+      
+      try {
+        let res;
+        if (isSignupMode) {
+          res = await window.signupWithEmail(email, pwd);
+        } else {
+          res = await window.loginWithEmail(email, pwd);
+        }
+        
+        if (res.error) {
+          errEl.innerText = res.error.message;
+          errEl.classList.remove('hidden');
+        } else {
+          closeAuthModal();
+        }
+      } catch (err) {
+        errEl.innerText = "حدث خطأ غير متوقع.";
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.innerHTML = origText;
+        btn.disabled = false;
+      }
+    });
+    
+    document.getElementById('profileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('profName').value;
+      const phone = document.getElementById('profPhone').value;
+      const addr = document.getElementById('profAddress').value;
+      
+      const errEl = document.getElementById('profileError');
+      const succEl = document.getElementById('profileSuccess');
+      errEl.classList.add('hidden');
+      succEl.classList.add('hidden');
+      
+      const btn = document.getElementById('profileSubmitBtn');
+      const origText = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...';
+      btn.disabled = true;
+      
+      try {
+        const res = await window.saveCustomerProfile({ full_name: name, phone: phone, gov_address: addr });
+        if (res && res.error) {
+          errEl.innerText = res.error.message;
+          errEl.classList.remove('hidden');
+        } else {
+          succEl.classList.remove('hidden');
+          setTimeout(() => closeProfileModal(), 1500);
+        }
+      } catch (err) {
+        errEl.innerText = err.message || "حدث خطأ في الحفظ.";
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.innerHTML = origText;
+        btn.disabled = false;
+      }
+    });
+
+    function updateAuthUI(user) {
+       const iconDesk = document.getElementById('desktopAuthIcon');
+       const iconMob = document.getElementById('mobileAuthIcon');
+       if(user) {
+         if(iconDesk) iconDesk.className = 'fa-solid fa-user-check text-lg text-green-500';
+         if(iconMob) iconMob.className = 'fa-solid fa-user-check text-base text-green-500';
+       } else {
+         if(iconDesk) iconDesk.className = 'fa-regular fa-user text-lg text-slate-700 dark:text-slate-300';
+         if(iconMob) iconMob.className = 'fa-regular fa-user text-base text-slate-400';
+       }
+    }
+
     // Checkout
     function openCheckout() {
       if(CART.length === 0) return alert('السلة فارغة!');
       toggleCart();
+      
+      if(window.currentUserProfile) {
+          const n = document.getElementById('custName');
+          const p = document.getElementById('custPhone');
+          const a = document.getElementById('custAddress') || document.getElementById('custGov');
+          if(n && !n.value) n.value = window.currentUserProfile.full_name || '';
+          if(p && !p.value) p.value = window.currentUserProfile.phone || '';
+          if(a && !a.value) a.value = window.currentUserProfile.gov_address || '';
+      }
+      
       document.getElementById('checkoutModal').classList.remove('hidden');
       document.getElementById('checkoutModal').classList.add('flex');
     }

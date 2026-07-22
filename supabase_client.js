@@ -75,3 +75,58 @@ async function fetchStoreDataCloud() {
     // Fallback to local storage if supabase fails
     return JSON.parse(localStorage.getItem('STORE_DATA')) || { products: [], brands: [], categories: [], banners: [], discounts: [] };
 }
+
+// --- Auth & Profile Logic ---
+window.currentUserProfile = null;
+
+// Listen to Auth State
+supabase.auth.onAuthStateChange(async (event, session) => {
+    if (session) {
+        // Fetch profile
+        const { data, error } = await supabase.from('customer_profiles').select('*').eq('id', session.user.id).single();
+        if (!error && data) {
+            window.currentUserProfile = data;
+        } else {
+            // New user without profile
+            window.currentUserProfile = { id: session.user.id, full_name: '', phone: '', gov_address: '' };
+        }
+    } else {
+        window.currentUserProfile = null;
+    }
+    // Update UI if function exists
+    if (typeof updateAuthUI === 'function') {
+        updateAuthUI(session?.user);
+    }
+});
+
+window.loginWithEmail = async function(email, password) {
+    return await supabase.auth.signInWithPassword({ email, password });
+}
+
+window.signupWithEmail = async function(email, password) {
+    return await supabase.auth.signUp({ email, password });
+}
+
+window.logoutUser = async function() {
+    await supabase.auth.signOut();
+    if(typeof closeProfileModal === 'function') closeProfileModal();
+}
+
+window.saveCustomerProfile = async function(profileData) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if(!user) throw new Error("يجب تسجيل الدخول أولاً");
+    
+    const { data: existing } = await supabase.from('customer_profiles').select('id').eq('id', user.id).maybeSingle();
+    
+    let res;
+    if (existing) {
+        res = await supabase.from('customer_profiles').update(profileData).eq('id', user.id);
+    } else {
+        res = await supabase.from('customer_profiles').insert([{ id: user.id, ...profileData }]);
+    }
+    
+    if(!res.error) {
+        window.currentUserProfile = { id: user.id, ...profileData };
+    }
+    return res;
+}
