@@ -311,7 +311,7 @@ window.addEventListener('popstate', (e) => {
 
   <!-- Supabase Integration -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2?v=1784664561"></script>
-  <script src="supabase_client.js?v=23"></script>
+  <script src="supabase_client.js?v=25"></script>
 
 </head>
 <body class="antialiased overflow-x-hidden selection:bg-primary selection:text-white">
@@ -1223,72 +1223,47 @@ window.addEventListener('popstate', (e) => {
           const name = document.getElementById('custName').value;
           const phone = document.getElementById('custPhone').value;
           const address = document.getElementById('custGov') ? document.getElementById('custGov').value : ''; 
-          const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+          let msg = `*طلب جديد من متجر بركات الرحمن* 🛒\n\n`;
+          msg += `👤 الاسم: ${name}\n`;
+          msg += `📱 الهاتف: ${phone}\n`;
+          msg += `📍 العنوان: ${address}\n\n`;
+          msg += `*المنتجات المطلوبة:*\n`;
           
-          const newOrder = {
-              id: Date.now().toString(),
-              customer_name: name,
-              customer_phone: phone,
-              customer_address: address,
-              total: String(total),
-              payment_method: payMethod,
-              items: CART,
-              status: 'pending',
-              created_at: new Date().toISOString()
-          };
-
-          if(typeof supabase !== 'undefined') {
-              const { error } = await supabase.from('orders').insert([newOrder]);
-              if(error) throw error;
-          }
-
-          let ORDERS = JSON.parse(localStorage.getItem('barakat_orders')) || [];
-          const newOrderLocal = {
-              id: newOrder.id,
-              date: newOrder.created_at,
-              status: newOrder.status,
-              total: total,
-              payMethod: newOrder.payment_method,
-              items: newOrder.items,
-              customer: {
-                  name: newOrder.customer_name,
-                  phone: newOrder.customer_phone,
-                  gov: newOrder.customer_address,
-                  addr: ''
+          CART.forEach((item, index) => {
+              msg += `${index + 1}. ${item.name}\n`;
+              if (item.selectedSize || item.selectedColor) {
+                  msg += `   - ${item.selectedSize ? 'الحجم: ' + item.selectedSize : ''} ${item.selectedColor ? 'اللون: ' + item.selectedColor : ''}\n`;
               }
-          };
-          ORDERS.push(newOrderLocal);
-          localStorage.setItem('barakat_orders', JSON.stringify(ORDERS));
+              msg += `   - السعر: $${item.price} × ${item.quantity} = $${item.price * item.quantity}\n`;
+          });
+          
+          msg += `\n*المجموع الكلي: $${total}* 💵`;
 
+          // Placeholder for the WhatsApp number (user will change this)
+          const whatsappNumber = "9647838476719"; 
+          const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
           
           document.getElementById('checkoutModal').classList.add('hidden');
-          if(typeof confetti !== 'undefined') {
-              confetti({
-                  particleCount: 250,
-                  spread: 120,
-                  origin: { y: 0.5 },
-                  colors: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
-              });
-          }
-          if(typeof Swal !== 'undefined') {
-              Swal.fire({
-                title: 'تم استلام طلبك بنجاح! 🎉',
-                text: 'سنقوم بالاتصال بك قريباً لتأكيد الطلب. شكراً لتسوقك معنا!',
-                icon: 'success',
-                confirmButtonText: 'حسناً',
-                confirmButtonColor: '#3b82f6'
-              }).then(() => {
-                  window.location.reload();
-              });
-          } else {
-              alert('تم استلام طلبك بنجاح! شكراً لتسوقك معنا.');
-              window.location.reload();
-          }
+          
           CART = []; 
           saveCart(); 
           updateCartUI(); 
           closeCheckout();
           e.target.reset();
+
+          if(typeof Swal !== 'undefined') {
+              Swal.fire({
+                title: 'جاري تحويلك للواتساب! 🚀',
+                text: 'سيتم تحويلك الآن لتأكيد طلبك مباشرة معنا عبر الواتساب.',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+              }).then(() => {
+                  window.open(whatsappUrl, '_blank');
+              });
+          } else {
+              window.open(whatsappUrl, '_blank');
+          }
       } catch (error) {
           console.error("Order submission error:", error);
           alert('تفاصيل الخطأ (صوّر هذه الشاشة): ' + (error.message || JSON.stringify(error)));

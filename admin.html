@@ -90,12 +90,12 @@ window.addEventListener('error', function(e) {
         </div>
       </div>
       <h2 class="text-2xl font-black text-slate-800 dark:text-white mb-2">تسجيل الدخول</h2>
-      <p class="text-slate-500 font-bold text-sm mb-8">يرجى إدخال اسم المستخدم والرمز السري</p>
+      <p class="text-slate-500 font-bold text-sm mb-8">يرجى تسجيل الدخول باستخدام البريد الإلكتروني</p>
       
       <div class="space-y-4 mb-8 text-right">
         <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">اسم المستخدم</label>
-          <input type="text" id="loginPhone" dir="ltr" class="w-full text-left px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold outline-none focus:ring-2 focus:ring-blue-500" placeholder="أدخل اسم المستخدم" />
+          <label class="block text-xs font-bold text-slate-500 mb-1">البريد الإلكتروني (Email)</label>
+          <input type="email" id="loginEmail" dir="ltr" class="w-full text-left px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold outline-none focus:ring-2 focus:ring-blue-500" placeholder="admin@example.com" />
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-500 mb-1">الرمز السري (OTP)</label>
@@ -164,7 +164,7 @@ window.addEventListener('error', function(e) {
       <div onclick="switchTab('discounts')" id="tab-discounts" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-ticket w-5 text-center"></i> الكوبونات</div>
       
       <div onclick="switchTab('kanban')" id="tab-kanban" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-truck-fast w-5 text-center"></i> الطلبات</div>
-      <div onclick="switchTab('admins')" id="tab-admins" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-users-gear w-5 text-center"></i> إدارة المشرفين</div>
+      
       
       
     <div onclick="openSettingsModal()" id="tab-settings" class="w-full flex hover-float hover-icon-bounce items-center justify-start gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-800 hover:text-white cursor-pointer transition-colors"><i class="fa-solid fa-gear w-5 text-center"></i> الإعدادات</div>
@@ -215,27 +215,10 @@ window.addEventListener('error', function(e) {
     <!-- DASHBOARD -->
       <div id="view-dashboard" class="space-y-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div class="solid-panel p-6 rounded-3xl flex items-center justify-between">
-            <div><p class="text-slate-500 font-bold mb-1">المبيعات</p><h3 class="text-3xl font-black">2.5M <span class="text-sm">د.ع</span></h3></div>
+          
             <div class="w-14 h-14 rounded-full bg-green-100 text-green-500 flex items-center justify-center text-2xl"><i class="fa-solid fa-dollar-sign"></i></div>
           </div>
-          <div class="solid-panel p-6 rounded-3xl flex items-center justify-between">
-            <div><p class="text-slate-500 font-bold mb-1">الطلبات اليوم</p><h3 class="text-3xl font-black">124</h3></div>
-            <div class="w-14 h-14 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center text-2xl"><i class="fa-solid fa-box"></i></div>
-          </div>
-          <div class="solid-panel p-6 rounded-3xl flex items-center justify-between">
-            <div><p class="text-slate-500 font-bold mb-1">المنتجات النشطة</p><h3 class="text-3xl font-black">89</h3></div>
-            <div class="w-14 h-14 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center text-2xl"><i class="fa-solid fa-tags"></i></div>
-          </div>
-          <div class="solid-panel p-6 rounded-3xl flex items-center justify-between">
-            <div><p class="text-slate-500 font-bold mb-1">العملاء</p><h3 class="text-3xl font-black">1,024</h3></div>
-            <div class="w-14 h-14 rounded-full bg-yellow-100 text-yellow-500 flex items-center justify-center text-2xl"><i class="fa-solid fa-users"></i></div>
-          </div>
-        </div>
-        <div class="solid-panel p-6 rounded-3xl">
-          <h3 class="font-black mb-6">إحصائيات المبيعات (أسبوع)</h3>
-          <canvas id="salesChart" height="100"></canvas>
-        </div>
+          
       </div>
 
       <!-- KANBAN VIEW -->
@@ -361,7 +344,7 @@ window.addEventListener('error', function(e) {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div>
           <label class="block text-sm font-bold mb-2">رقم هاتف المتجر</label>
-          <input type="text" id="set_phone" placeholder="أدخل اسم المستخدم" class="w-full p-3 rounded-xl border dark:bg-slate-800 dark:border-slate-700" />
+          <input type="text" id="set_phone" placeholder="admin@example.com" class="w-full p-3 rounded-xl border dark:bg-slate-800 dark:border-slate-700" />
         </div>
         <div>
           <label class="block text-sm font-bold mb-2">عنوان المتجر</label>
@@ -483,7 +466,7 @@ window.addEventListener('error', function(e) {
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-500 mb-1">رقم الهاتف (الذي سيدخل به)</label>
-          <input type="tel" id="au_phone" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold outline-none focus:ring-2 focus:ring-blue-500 text-left" dir="ltr" placeholder="أدخل اسم المستخدم" />
+          <input type="tel" id="au_phone" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold outline-none focus:ring-2 focus:ring-blue-500 text-left" dir="ltr" placeholder="admin@example.com" />
         </div>
         
         <div>
@@ -1597,13 +1580,13 @@ window.addEventListener('error', function(e) {
     // ===== AUTHENTICATION & ROLES =====
     let CURRENT_ADMIN = null;
 
-    async function attemptLogin() {
-        const phone = document.getElementById('loginPhone').value.trim();
+        async function attemptLogin() {
+        const email = document.getElementById('loginEmail').value.trim();
         const passcode = document.getElementById('loginPasscode').value.trim();
         const btn = document.getElementById('loginBtn');
         
-        if(!phone || !passcode) {
-            Swal.fire('تنبيه', 'يرجى إدخال اسم المستخدم والرمز السري', 'warning');
+        if(!email || !passcode) {
+            Swal.fire('تنبيه', 'يرجى إدخال البريد الإلكتروني وكلمة المرور', 'warning');
             return;
         }
         
@@ -1613,47 +1596,49 @@ window.addEventListener('error', function(e) {
         try {
             if(typeof supabase === 'undefined') throw new Error("Supabase is not loaded");
             
-            // Allow master override for emergencies if supabase is empty or locked out
-            if (phone === 'ahmed2006' && passcode === 'ahmed224466ahmed') {
-                const masterUser = { id: 'master', name: 'مدير النظام', phone: 'ahmed2006', role: 'owner', permissions: [] };
-                localStorage.setItem('LOGGED_IN_ADMIN', JSON.stringify(masterUser));
-                window.location.reload();
-                return;
-            }
-
-            const { data, error } = await supabase.from('admins').select('*').eq('phone', phone).eq('passcode', passcode).limit(1);
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: passcode,
+            });
             
             if(error) throw error;
             
-            if(data && data.length > 0) {
-                const adminUser = data[0];
-                localStorage.setItem('LOGGED_IN_ADMIN', JSON.stringify(adminUser));
-                window.location.reload(); // Reload to apply permissions and fetch data
+            if(data.session) {
+                window.location.reload(); 
             } else {
-                Swal.fire('خطأ', 'اسم المستخدم أو الرمز السري غير صحيح!', 'error');
+                Swal.fire('خطأ', 'البريد الإلكتروني أو كلمة المرور غير صحيحة!', 'error');
             }
         } catch(e) {
             console.error("Login error:", e);
-            Swal.fire('خطأ في الاتصال', 'تعذر الاتصال بقاعدة البيانات. ' + e.message, 'error');
+            Swal.fire('خطأ في الاتصال', e.message || 'تعذر تسجيل الدخول', 'error');
         } finally {
             btn.innerHTML = '<span>دخول</span>';
             btn.disabled = false;
         }
     }
 
-    function logoutAdmin() {
-        localStorage.removeItem('LOGGED_IN_ADMIN');
+    async function logoutAdmin() {
+        if(typeof supabase !== 'undefined') {
+            await supabase.auth.signOut();
+        }
         window.location.reload();
     }
 
-    function checkAuth() {
-        const u = JSON.parse(localStorage.getItem('LOGGED_IN_ADMIN'));
-        if(!u) {
+    async function checkAuth() {
+        if(typeof supabase === 'undefined') {
+            setTimeout(checkAuth, 500);
+            return;
+        }
+        
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if(!session) {
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('mainApp').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('flex');
         } else {
-            CURRENT_ADMIN = u;
+            // Logged in!
+            CURRENT_ADMIN = { role: 'owner', email: session.user.email, permissions: ['products', 'categories', 'settings'] };
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             document.getElementById('mainApp').classList.add('flex');
@@ -1667,19 +1652,12 @@ window.addEventListener('error', function(e) {
                 logoutBtn.className = 'ml-4 w-10 h-10 hover-float rounded-full solid-panel flex items-center justify-center bg-rose-50 text-rose-500 border-rose-100 dark:bg-rose-900/30 dark:border-rose-800';
                 logoutBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
                 logoutBtn.title = 'تسجيل الخروج';
-                // Insert after theme toggle
                 header.appendChild(logoutBtn);
-                
-                // Add Admin name badge
-                const nameBadge = document.createElement('div');
-                nameBadge.className = 'ml-auto mr-4 px-4 py-2 bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 font-bold rounded-xl text-sm border border-blue-100 dark:border-slate-700 hidden md:block';
-                nameBadge.innerHTML = `<i class="fa-solid fa-user-shield ml-2"></i>مرحباً، ${u.name}`;
-                header.insertBefore(nameBadge, logoutBtn);
             }
-
-            applyPermissions(u.role, u.permissions || []);
         }
     }
+
+
 
     function applyPermissions(role, permissions) {
         if(role === 'owner') return; // Owner sees everything
