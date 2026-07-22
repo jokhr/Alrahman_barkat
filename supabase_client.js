@@ -90,8 +90,44 @@ supabase.auth.onAuthStateChange(async (event, session) => {
             // New user without profile
             window.currentUserProfile = { id: session.user.id, full_name: '', phone: '', gov_address: '' };
         }
+        
+        // Fetch Favorites
+        const { data: favs } = await supabase.from('favorites').select('product_id').eq('user_id', session.user.id);
+        if (favs) {
+            const cloudWishlist = favs.map(f => f.product_id);
+            // Merge local WISHLIST to cloud if there are any
+            let localWishlist = [];
+            try {
+                localWishlist = JSON.parse(localStorage.getItem('WISHLIST')) || [];
+            } catch(e) {}
+            
+            const newFavs = localWishlist.filter(id => !cloudWishlist.includes(id));
+            if (newFavs.length > 0) {
+                const inserts = newFavs.map(id => ({ user_id: session.user.id, product_id: id }));
+                await supabase.from('favorites').insert(inserts);
+                cloudWishlist.push(...newFavs);
+                // Clear local
+                localStorage.setItem('WISHLIST', JSON.stringify([]));
+            }
+            
+            // Sync to global variable
+            if (typeof WISHLIST !== 'undefined') {
+                WISHLIST.length = 0;
+                WISHLIST.push(...cloudWishlist);
+                if (typeof updateWishUI === 'function') updateWishUI();
+            }
+        }
+        
     } else {
         window.currentUserProfile = null;
+        if (typeof WISHLIST !== 'undefined') {
+            try {
+                const localW = JSON.parse(localStorage.getItem('WISHLIST')) || [];
+                WISHLIST.length = 0;
+                WISHLIST.push(...localW);
+                if (typeof updateWishUI === 'function') updateWishUI();
+            } catch(e) {}
+        }
     }
     // Update UI if function exists
     if (typeof updateAuthUI === 'function') {
@@ -129,4 +165,18 @@ window.saveCustomerProfile = async function(profileData) {
         window.currentUserProfile = { id: user.id, ...profileData };
     }
     return res;
+}
+
+window.addFavorite = async function(productId) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if(!user) return false;
+    const res = await supabase.from('favorites').insert([{ user_id: user.id, product_id: String(productId) }]);
+    return !res.error;
+}
+
+window.removeFavorite = async function(productId) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if(!user) return false;
+    const res = await supabase.from('favorites').delete().eq('user_id', user.id).eq('product_id', String(productId));
+    return !res.error;
 }
