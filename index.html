@@ -887,10 +887,10 @@ window.addEventListener('popstate', (e) => {
               </div>
               
               <!-- Floating Actions -->
-              <button onclick="event.stopPropagation(); toggleWishlist('${p.id}', this)" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-all shadow-sm z-10 ${inWish ? '!text-rose-500' : ''}"><i class="fa-solid fa-heart ${inWish ? 'fa-beat' : ''}"></i></button>
+              <button onclick="event.stopPropagation(); toggleWishlist(null, '${p.id}', this)" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-all shadow-sm z-10 ${inWish ? '!text-rose-500' : ''}"><i class="fa-solid fa-heart ${inWish ? 'fa-beat' : ''}"></i></button>
               
               <!-- Cart Add Overlay -->
-              <button onclick="event.stopPropagation(); addToCart('${p.id}')" class="absolute top-1/2 -translate-y-1/2 left-4 w-10 h-10 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-white hover:bg-primary transition-all shadow-lg z-10 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"><i class="fa-solid fa-cart-plus"></i></button>
+              <button onclick="event.stopPropagation(); addToCart(null, '${p.id}')" class="absolute top-1/2 -translate-y-1/2 left-4 w-10 h-10 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-white hover:bg-primary transition-all shadow-lg z-10 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"><i class="fa-solid fa-cart-plus"></i></button>
             </div>
             <div class="p-5 flex flex-col flex-1">
               <div class="text-xs text-brand font-bold uppercase tracking-wider mb-2">${p.brandLabel || p.brand || ''}</div>
@@ -916,65 +916,10 @@ window.addEventListener('popstate', (e) => {
     // Products
     function filterProducts() {
       const maxPrice = parseInt(document.getElementById('priceRange').value);
-      const grid = document.getElementById('productGrid');
-      grid.innerHTML = '';
+      const gridContainer = document.getElementById('productGrid');
+      gridContainer.innerHTML = '';
+      
       const filtered = STORE_DATA.products.filter(p => (CURRENT_BRAND_FILTER === 'all' || p.brand === CURRENT_BRAND_FILTER) && (CURRENT_CATEGORY_FILTER === 'all' || p.categoryId === CURRENT_CATEGORY_FILTER) && p.price <= maxPrice);
-      if (filtered.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-10 font-bold text-slate-500 dark:text-slate-400">لا توجد منتجات</div>`; return; }
-
-      filtered.forEach((p, pIdx) => {
-        const isOutOfStock = (p.stock !== undefined ? p.stock : 10) <= 0;
-        const hasDiscount = p.oldPrice && p.oldPrice > p.price;
-        const discountPct = hasDiscount ? Math.round((p.oldPrice - p.price)/p.oldPrice * 100) : 0;
-        const badgeHtml = isOutOfStock
-          ? `<div class="bg-red-50 text-red-600 border-red-200 text-[10px] font-black px-3 py-1 rounded-full border shadow-sm">نفدت الكمية</div>`
-          : (hasDiscount
-            ? `<div class="discount-badge text-white text-[10px] font-black px-3 py-1 rounded-full shadow-sm">${discountPct}% تخفيض</div>`
-            : `<div class="bg-green-50 text-green-600 border-green-200 text-[10px] font-black px-3 py-1 rounded-full border shadow-sm new-badge">جديد</div>`);
-
-        grid.innerHTML += `
-          <div class="solid-card product-card-anim rounded-[20px] flex flex-col relative group cursor-pointer" style="--card-delay:${pIdx * 55}ms" onclick="openQuickView('${p.id}')">
-            <!-- Image Container (NO overflow-hidden so cart btn shows) -->
-            <div class="relative w-full aspect-square flex items-center justify-center p-2 border-b border-white/40 dark:border-white/5 rounded-t-[20px] overflow-hidden img-with-skeleton">
-              <!-- Feature #14: Skeleton Loader -->
-              <div class="img-skeleton-overlay skeleton"></div>
-              <img src="${p.img}" class="card-img w-full h-full object-contain" onload="this.previousElementSibling.classList.add('loaded')" onerror="this.previousElementSibling.classList.add('loaded')" />
-              
-              <!-- Feature #8: Shimmering Badge -->
-              <div class="absolute top-3 right-3 flex flex-col gap-1 z-10 items-end">
-                ${badgeHtml}
-              </div>
-              
-              <!-- Wishlist Button -->
-              <button data-wishlist-id="${p.id}" onclick="event.stopPropagation(); toggleWishlistById('${p.id}', this)" class="wishlist-btn absolute top-3 left-3 w-8 h-8 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-sm border border-slate-100 dark:border-slate-600 transition-all z-10 ${WISHLIST.map(String).includes(String(p.id)) ? 'text-rose-500' : 'text-slate-400 hover:text-rose-500'}">
-                <i class="${WISHLIST.map(String).includes(String(p.id)) ? 'fa-solid' : 'fa-regular'} fa-heart text-sm"></i>
-              </button>
-            </div>
-            
-            <!-- Cart Button: OUTSIDE image div to avoid clipping -->
-            <div class="relative flex justify-start px-4 -mt-5 z-20 mb-1">
-              <button onclick="event.stopPropagation(); addToCart(null, '${p.id}')" class="ripple-container w-10 h-10 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-white shadow-md border border-slate-100 dark:border-slate-600 hover:bg-primary hover:text-white hover:border-primary transition-all ${ isOutOfStock ? 'opacity-50 cursor-not-allowed' : '' }" ${ isOutOfStock ? 'disabled' : '' }>
-                <i class="fa-solid fa-cart-plus text-sm"></i>
-              </button>
-            </div>
-            
-            <!-- Details -->
-            <div class="px-4 pb-4 flex-1 flex flex-col text-right">
-              <h3 class="text-sm font-bold leading-snug mb-4 text-slate-800 dark:text-slate-200 line-clamp-2">
-                <span class="font-black text-black dark:text-white">${p.brandLabel || ''}</span> ${p.name}
-              </h3>
-              
-              <div class="mt-auto flex flex-col items-end w-full">
-                <!-- Price -->
-                <div class="flex flex-col items-end w-full justify-end" dir="ltr">
-                  ${hasDiscount ? `<span class="text-[10px] font-black text-rose-500 line-through mb-0.5">IQD ${p.oldPrice.toLocaleString('en-US')}</span>` : ''}
-                  <div class="flex items-baseline gap-1">
-                    <span class="text-[10px] text-slate-500 font-bold tracking-widest">IQD</span>
-                    <span class="text-xl font-black ${hasDiscount ? 'text-rose-600 dark:text-rose-400' : 'text-slate-900 dark:text-white'} tracking-tight">${p.price.toLocaleString('en-US')}</span>
-                  </div>
-                </div>
-                
-                <!-- Delivery info -->
-                <div class="flex items-center gap-1 mt-3 text-[10px] text-slate-500 dark:text-slate-400 font-bold w-full justify-end">
                   <span>توصيل البائع</span>
                   <i class="fa-solid fa-truck-fast text-[#00aaff]"></i>
                 </div>
