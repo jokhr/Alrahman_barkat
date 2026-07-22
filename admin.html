@@ -1113,7 +1113,12 @@ window.addEventListener('error', function(e) {
           <input type="text" id="m_brand" placeholder="رمز الماركة (مثال: samsung)" value="${item.brand||''}" class="w-full p-3 rounded-xl border dark:bg-slate-800 dark:border-slate-700" />
         `;
       } else if(currentSection === 'categories') {
-        const ICONS = ['fa-tv', 'fa-wind', 'fa-box', 'fa-blender', 'fa-fire-burner', 'fa-plug', 'fa-mobile', 'fa-laptop', 'fa-headphones', 'fa-camera'];
+        const ICONS = [
+          'fa-tv', 'fa-wind', 'fa-fan', 'fa-snowflake', 'fa-temperature-arrow-down',
+          'fa-temperature-low', 'fa-icicles', 'fa-droplet', 'fa-glass-water', 'fa-faucet-drip',
+          'fa-blender', 'fa-fire-burner', 'fa-plug', 'fa-bolt', 'fa-lightbulb',
+          'fa-mobile', 'fa-laptop', 'fa-headphones', 'fa-shirt', 'fa-box'
+        ];
         let iconHtml = '<div class="grid grid-cols-5 gap-2 mb-3">';
         ICONS.forEach(ic => {
            iconHtml += `<button type="button" onclick="document.getElementById('m_icon').value='${ic}'; document.querySelectorAll('.icon-btn').forEach(b=>b.classList.remove('ring-2','ring-brand')); this.classList.add('ring-2','ring-brand');" class="icon-btn w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-100  border dark:border-slate-700 ${item.icon===ic ? 'ring-2 ring-brand' : ''}"><i class="fa-solid ${ic} text-lg text-slate-700 dark:text-slate-300"></i></button>`;
