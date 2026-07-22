@@ -884,8 +884,8 @@ window.addEventListener('error', function(e) {
 
       items.forEach(item => {
         let content = '';
-        if(currentSection === 'products') content = `<img src="${item.img}" class="w-full h-32 object-contain bg-slate-50 mb-4 rounded-xl" /><h4 class="font-black truncate">${item.name}</h4><p class="text-brand font-bold">${item.price} د.ع</p>`;
-        else if(currentSection === 'categories') content = `<div class="w-16 h-16 bg-slate-50 rounded-xl flex items-center justify-center text-3xl mb-4"><i class="fa-solid ${item.icon}"></i></div><h4 class="font-black">${item.name}</h4>`;
+        if(currentSection === 'products') content = `<img src="${item.img}" class="w-full h-32 object-contain bg-slate-50 dark:bg-slate-800 mb-4 rounded-xl" /><h4 class="font-black truncate">${item.name}</h4><p class="text-brand font-bold">${item.price} د.ع</p>`;
+        else if(currentSection === 'categories') content = `<div class="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center text-3xl mb-4"><i class="fa-solid ${item.icon} text-slate-700 dark:text-slate-300"></i></div><h4 class="font-black">${item.name}</h4>`;
         else if(currentSection === 'brands') content = `<h4 class="font-black text-xl mb-2">${item.name}</h4><p class="text-xs text-slate-400 font-bold uppercase">${item.id}</p>`;
         else if(currentSection === 'banners') content = `<img src="${item.img}" class="w-full h-24 object-cover rounded-xl mb-4" /><h4 class="font-black">${item.title}</h4>`;
         else if(currentSection === 'discounts') content = `<div class="bg-primary text-white p-4 rounded-xl mb-4 text-center"><h4 class="text-2xl font-black tracking-widest">${item.code}</h4></div><p class="font-bold text-center">خصم: ${item.percent}%</p>`;
