@@ -11,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <script>
+    var CURRENT_ADMIN = null;
     tailwind.config = {
       darkMode: 'class',
       theme: {
@@ -1578,7 +1579,7 @@ window.addEventListener('error', function(e) {
 
     
     // ===== AUTHENTICATION & ROLES =====
-    let CURRENT_ADMIN = null;
+    
 
         async function attemptLogin() {
         const email = document.getElementById('loginEmail').value.trim();
